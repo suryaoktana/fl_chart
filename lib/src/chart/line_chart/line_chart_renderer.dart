@@ -10,22 +10,14 @@ import 'package:flutter/material.dart';
 
 /// Low level LineChart Widget.
 class LineChartLeaf extends LeafRenderObjectWidget {
-  const LineChartLeaf({
-    super.key,
-    required this.data,
-    required this.targetData,
-  });
+  const LineChartLeaf({Key? key, required this.data, required this.targetData})
+      : super(key: key);
 
-  final LineChartData data;
-  final LineChartData targetData;
+  final LineChartData data, targetData;
 
   @override
   RenderLineChart createRenderObject(BuildContext context) => RenderLineChart(
-        context,
-        data,
-        targetData,
-        MediaQuery.of(context).textScaleFactor,
-      );
+      context, data, targetData, MediaQuery.of(context).textScaleFactor);
 
   @override
   void updateRenderObject(BuildContext context, RenderLineChart renderObject) {
@@ -40,12 +32,9 @@ class LineChartLeaf extends LeafRenderObjectWidget {
 
 /// Renders our LineChart, also handles hitTest.
 class RenderLineChart extends RenderBaseChart<LineTouchResponse> {
-  RenderLineChart(
-    BuildContext context,
-    LineChartData data,
-    LineChartData targetData,
-    double textScale,
-  )   : _data = data,
+  RenderLineChart(BuildContext context, LineChartData data,
+      LineChartData targetData, double textScale)
+      : _data = data,
         _targetData = targetData,
         _textScale = textScale,
         super(targetData.lineTouchData, context);
@@ -80,28 +69,32 @@ class RenderLineChart extends RenderBaseChart<LineTouchResponse> {
   Size? mockTestSize;
 
   @visibleForTesting
-  LineChartPainter painter = LineChartPainter();
+  var painter = LineChartPainter();
 
   PaintHolder<LineChartData> get paintHolder {
+    print('this is data ${data.lineTouchData.customizedTouchTooltipData.customizedGetTooltipItems.toString()}');
+    print('this is target data ${targetData.lineBarsData[0].spots.toString()}');
     return PaintHolder(data, targetData, textScale);
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final canvas = context.canvas
-      ..save()
-      ..translate(offset.dx, offset.dy);
+    print('start painting');
+    final canvas = context.canvas;
+    canvas.save();
+    canvas.translate(offset.dx, offset.dy);
     painter.paint(
       buildContext,
       CanvasWrapper(canvas, mockTestSize ?? size),
       paintHolder,
     );
     canvas.restore();
+    print('done painting');
   }
 
   @override
   LineTouchResponse getResponseAtLocation(Offset localPosition) {
-    final touchedSpots = painter.handleTouch(
+    var touchedSpots = painter.handleTouch(
       localPosition,
       mockTestSize ?? size,
       paintHolder,
