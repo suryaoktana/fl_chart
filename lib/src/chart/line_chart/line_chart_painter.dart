@@ -34,18 +34,22 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
   /// parent can use [MediaQuery.textScaleFactor] to respect
   /// the system's font size.
   LineChartPainter() : super() {
-    _barPaint = Paint()..style = PaintingStyle.stroke;
+    _barPaint = Paint()
+      ..style = PaintingStyle.stroke;
 
-    _barAreaPaint = Paint()..style = PaintingStyle.fill;
+    _barAreaPaint = Paint()
+      ..style = PaintingStyle.fill;
 
-    _barAreaLinesPaint = Paint()..style = PaintingStyle.stroke;
+    _barAreaLinesPaint = Paint()
+      ..style = PaintingStyle.stroke;
 
     _clearBarAreaPaint = Paint()
       ..style = PaintingStyle.fill
       ..color = const Color(0x00000000)
       ..blendMode = BlendMode.dstIn;
 
-    _extraLinesPaint = Paint()..style = PaintingStyle.stroke;
+    _extraLinesPaint = Paint()
+      ..style = PaintingStyle.stroke;
 
     _touchLinePaint = Paint()
       ..style = PaintingStyle.stroke
@@ -158,6 +162,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         context,
         canvasWrapper,
         data.lineTouchData.touchTooltipData,
+        data.lineTouchData.customizedTouchTooltipData,
         topSpot,
         tooltipSpots,
         holder,
@@ -166,8 +171,8 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
   }
 
   @visibleForTesting
-  void clipToBorder(
-      CanvasWrapper canvasWrapper, PaintHolder<LineChartData> holder) {
+  void clipToBorder(CanvasWrapper canvasWrapper,
+      PaintHolder<LineChartData> holder) {
     final data = holder.data;
     final viewSize = canvasWrapper.size;
     final clip = data.clipData;
@@ -212,12 +217,12 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
       final barPath = generateBarPath(viewSize, barData, bar, holder);
 
       final belowBarPath =
-          generateBelowBarPath(viewSize, barData, barPath, bar, holder);
+      generateBelowBarPath(viewSize, barData, barPath, bar, holder);
       final completelyFillBelowBarPath = generateBelowBarPath(
           viewSize, barData, barPath, bar, holder,
           fillCompletely: true);
       final aboveBarPath =
-          generateAboveBarPath(viewSize, barData, barPath, bar, holder);
+      generateAboveBarPath(viewSize, barData, barPath, bar, holder);
       final completelyFillAboveBarPath = generateAboveBarPath(
           viewSize, barData, barPath, bar, holder,
           fillCompletely: true);
@@ -289,11 +294,9 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
   }
 
   @visibleForTesting
-  void drawDots(
-    CanvasWrapper canvasWrapper,
-    LineChartBarData barData,
-    PaintHolder<LineChartData> holder,
-  ) {
+  void drawDots(CanvasWrapper canvasWrapper,
+      LineChartBarData barData,
+      PaintHolder<LineChartData> holder,) {
     if (!barData.dotData.show || barData.spots.isEmpty) {
       return;
     }
@@ -309,7 +312,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         final y = getPixelY(spot.y, viewSize, holder);
         final xPercentInLine = (x / barXDelta) * 100;
         final painter =
-            barData.dotData.getDotPainter(spot, xPercentInLine, barData, i);
+        barData.dotData.getDotPainter(spot, xPercentInLine, barData, i);
 
         canvasWrapper.drawDot(painter, spot, Offset(x, y));
       }
@@ -317,11 +320,9 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
   }
 
   @visibleForTesting
-  void drawTouchedSpotsIndicator(
-    CanvasWrapper canvasWrapper,
-    List<LineIndexDrawingInfo> lineIndexDrawingInfo,
-    PaintHolder<LineChartData> holder,
-  ) {
+  void drawTouchedSpotsIndicator(CanvasWrapper canvasWrapper,
+      List<LineIndexDrawingInfo> lineIndexDrawingInfo,
+      PaintHolder<LineChartData> holder,) {
     if (lineIndexDrawingInfo.isEmpty) {
       return;
     }
@@ -351,7 +352,9 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         final xPercentInLine = (touchedSpot.dx / barXDelta) * 100;
         dotPainter = indicatorData.touchedSpotDotData
             .getDotPainter(spot, xPercentInLine, barData, index);
-        dotHeight = dotPainter.getSize(spot).height;
+        dotHeight = dotPainter
+            .getSize(spot)
+            .height;
       }
 
       /// For drawing the indicator line
@@ -360,9 +363,9 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
       final lineEndY = min(data.maxY,
           max(data.minY, data.lineTouchData.getTouchLineEnd(barData, index)));
       final lineStart =
-          Offset(touchedSpot.dx, getPixelY(lineStartY, viewSize, holder));
+      Offset(touchedSpot.dx, getPixelY(lineStartY, viewSize, holder));
       var lineEnd =
-          Offset(touchedSpot.dx, getPixelY(lineEndY, viewSize, holder));
+      Offset(touchedSpot.dx, getPixelY(lineEndY, viewSize, holder));
 
       /// If line end is inside the dot, adjust it so that it doesn't overlap with the dot.
       final dotMinY = touchedSpot.dy - dotHeight / 2;
@@ -609,8 +612,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
   /// [belowBarPath] maybe draw over the main bar line,
   /// then to fix the problem we use [filledAboveBarPath] to clear the above section from this draw.
   @visibleForTesting
-  void drawBelowBar(
-      CanvasWrapper canvasWrapper,
+  void drawBelowBar(CanvasWrapper canvasWrapper,
       Path belowBarPath,
       Path filledAboveBarPath,
       PaintHolder<LineChartData> holder,
@@ -690,8 +692,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
   /// [aboveBarPath] maybe draw over the main bar line,
   /// then to fix the problem we use [filledBelowBarPath] to clear the above section from this draw.
   @visibleForTesting
-  void drawAboveBar(
-      CanvasWrapper canvasWrapper,
+  void drawAboveBar(CanvasWrapper canvasWrapper,
       Path aboveBarPath,
       Path filledBelowBarPath,
       PaintHolder<LineChartData> holder,
@@ -768,13 +769,11 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
   }
 
   @visibleForTesting
-  void drawBetweenBar(
-    CanvasWrapper canvasWrapper,
-    Path barPath,
-    BetweenBarsData betweenBarsData,
-    Rect aroundRect,
-    PaintHolder<LineChartData> holder,
-  ) {
+  void drawBetweenBar(CanvasWrapper canvasWrapper,
+      Path barPath,
+      BetweenBarsData betweenBarsData,
+      Rect aroundRect,
+      PaintHolder<LineChartData> holder,) {
     final viewSize = canvasWrapper.size;
 
     _barAreaPaint.setColorOrGradient(
@@ -793,16 +792,16 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
 
   /// draw the main bar line's shadow by the [barPath]
   @visibleForTesting
-  void drawBarShadow(
-      CanvasWrapper canvasWrapper, Path barPath, LineChartBarData barData) {
+  void drawBarShadow(CanvasWrapper canvasWrapper, Path barPath,
+      LineChartBarData barData) {
     if (!barData.show || barData.shadow.color.opacity == 0.0) {
       return;
     }
 
     _barPaint.strokeCap =
-        barData.isStrokeCapRound ? StrokeCap.round : StrokeCap.butt;
+    barData.isStrokeCapRound ? StrokeCap.round : StrokeCap.butt;
     _barPaint.strokeJoin =
-        barData.isStrokeJoinRound ? StrokeJoin.round : StrokeJoin.miter;
+    barData.isStrokeJoinRound ? StrokeJoin.round : StrokeJoin.miter;
     _barPaint.color = barData.shadow.color;
     _barPaint.shader = null;
     _barPaint.strokeWidth = barData.barWidth;
@@ -822,21 +821,19 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
 
   /// draw the main bar line by the [barPath]
   @visibleForTesting
-  void drawBar(
-    CanvasWrapper canvasWrapper,
-    Path barPath,
-    LineChartBarData barData,
-    PaintHolder<LineChartData> holder,
-  ) {
+  void drawBar(CanvasWrapper canvasWrapper,
+      Path barPath,
+      LineChartBarData barData,
+      PaintHolder<LineChartData> holder,) {
     if (!barData.show) {
       return;
     }
     final viewSize = canvasWrapper.size;
 
     _barPaint.strokeCap =
-        barData.isStrokeCapRound ? StrokeCap.round : StrokeCap.butt;
+    barData.isStrokeCapRound ? StrokeCap.round : StrokeCap.butt;
     _barPaint.strokeJoin =
-        barData.isStrokeJoinRound ? StrokeJoin.round : StrokeJoin.miter;
+    barData.isStrokeJoinRound ? StrokeJoin.round : StrokeJoin.miter;
 
     final rectAroundTheLine = Rect.fromLTRB(
       getPixelX(barData.mostLeftSpot.x, viewSize, holder),
@@ -899,7 +896,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         if (line.label.show) {
           final label = line.label;
           final style =
-              TextStyle(fontSize: 11, color: line.color).merge(label.style);
+          TextStyle(fontSize: 11, color: line.color).merge(label.style);
           final padding = label.padding as EdgeInsets;
 
           final span = TextSpan(
@@ -954,7 +951,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
           final centerX = line.image!.width / 2;
           final centerY = line.image!.height / 2;
           final centeredImageOffset =
-              Offset(to.dx - centerX, viewSize.height - centerY);
+          Offset(to.dx - centerX, viewSize.height - centerY);
           canvasWrapper.drawImage(
               line.image!, centeredImageOffset, _imagePaint);
         }
@@ -962,7 +959,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         if (line.label.show) {
           final label = line.label;
           final style =
-              TextStyle(fontSize: 11, color: line.color).merge(label.style);
+          TextStyle(fontSize: 11, color: line.color).merge(label.style);
           final padding = label.padding as EdgeInsets;
 
           final span = TextSpan(
@@ -994,10 +991,10 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
   }
 
   @visibleForTesting
-  void drawTouchTooltip(
-      BuildContext context,
+  void drawTouchTooltip(BuildContext context,
       CanvasWrapper canvasWrapper,
       LineTouchTooltipData tooltipData,
+      CustomizedLineTouchToolTipData customizedTooltipData,
       FlSpot showOnSpot,
       ShowingTooltipIndicators showingTooltipSpots,
       PaintHolder<LineChartData> holder) {
@@ -1009,7 +1006,10 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
     final drawingTextPainters = <TextPainter>[];
 
     final tooltipItems =
-        tooltipData.getTooltipItems(showingTooltipSpots.showingSpots);
+    tooltipData.getTooltipItems(showingTooltipSpots.showingSpots);
+    final customizedTooltipItems =
+    customizedTooltipData.customizedGetTooltipItems(
+        showingTooltipSpots.showingSpots);
     if (tooltipItems.length != showingTooltipSpots.showingSpots.length) {
       throw Exception('tooltipItems and touchedSpots size should be same');
     }
@@ -1034,6 +1034,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
       tp.layout(maxWidth: tooltipData.maxContentWidth);
       drawingTextPainters.add(tp);
     }
+
     if (drawingTextPainters.isEmpty) {
       return;
     }
@@ -1136,164 +1137,34 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
 
     final rotateAngle = tooltipData.rotateAngle;
     final rectRotationOffset =
-        Offset(0, Utils().calculateRotationOffset(rect.size, rotateAngle).dy);
+    Offset(0, Utils()
+        .calculateRotationOffset(rect.size, rotateAngle)
+        .dy);
     final rectDrawOffset = Offset(roundedRect.left, roundedRect.top);
 
     final textRotationOffset =
-        Utils().calculateRotationOffset(rect.size, rotateAngle);
+    Utils().calculateRotationOffset(rect.size, rotateAngle);
 
     if (tooltipData.tooltipBorder != BorderSide.none) {
       _borderTouchTooltipPaint.color = tooltipData.tooltipBorder.color;
       _borderTouchTooltipPaint.strokeWidth = tooltipData.tooltipBorder.width;
     }
 
-    // canvasWrapper.drawRotated(
-    //   size: rect.size,
-    //   rotationOffset: rectRotationOffset,
-    //   drawOffset: rectDrawOffset,
-    //   angle: rotateAngle,
-    //   drawCallback: () {
-    //     canvasWrapper.drawRRect(roundedRect, _bgTouchTooltipPaint);
-    //     canvasWrapper.drawRRect(roundedRect, _borderTouchTooltipPaint);
-    //   },
-    // );
-
-    //HERE MAN
-    // final Path complexPathToDraw = parseSvgPathData("M159.25,238.29H142.49q-3.63,0-5.18-1.62c-1-1.09-1.55-2.82-1.55-5.19V190.25q0-3.62,1.59-5.21t5.14-1.6h17.77a41.9,41.9,0,0,1,6.81.49,14.65,14.65,0,0,1,5.16,1.87,13.61,13.61,0,0,1,3.45,2.94,12.91,12.91,0,0,1,2.28,3.93,13.21,13.21,0,0,1,.78,4.54q0,8.23-8.23,12,10.81,3.44,10.82,13.39a15.08,15.08,0,0,1-2.36,8.29,14.09,14.09,0,0,1-6.36,5.44,22.24,22.24,0,0,1-5.76,1.48A58.17,58.17,0,0,1,159.25,238.29Zm-12.38-46.5V206h10.18a20.23,20.23,0,0,0,6.41-.79,6.11,6.11,0,0,0,3.46-3,6.7,6.7,0,0,0,.94-3.52q0-4.15-3-5.52t-9-1.36Zm11.56,22.15H146.87v16H158.8q11.26,0,11.27-8.12c0-2.77-1-4.78-2.92-6S162.3,213.94,158.43,213.94Z");
-    // final Path complexPathToDraw2 = parseSvgPathData("M112.72,92.4c4,0,8.11.06,12.15-.07,1.74-.06,2.31.36,2.29,2.27-.1,10.63-.06,21.28,0,31.92,0,.17,0,.34,0,.51v31.91a59.47,59.47,0,1,0,61.94-.54q.06-32.15,0-64.29c0-1.57.57-1.75,1.86-1.73,4.2.07,8.41,0,12.61,0,3.27,0,5.86-1.22,7.17-4.41s.27-5.91-2.05-8.27Q186.81,57.41,165,35.09c-4.23-4.31-9.57-4.3-13.8,0Q129.36,57.4,107.57,79.74c-2.32,2.36-3.36,5.06-2,8.27S109.45,92.42,112.72,92.4Zm98.29,117A52.47,52.47,0,1,1,158.54,157,52.53,52.53,0,0,1,211,209.42ZM113.14,84q21.31-21.84,42.65-43.64c2-2,2.71-2,4.75.11q21.18,21.66,42.32,43.33c.37.38,1.11.63.83,1.52-4.89,0-9.77,0-14.66,0a6.73,6.73,0,0,0-6.77,6.55c-.07.86,0,1.72,0,2.58q0,30.18,0,60.37a59.46,59.46,0,0,0-48.2.37V122.58h0q0-14.7,0-29.42c0-5.11-2.69-7.79-7.67-7.81H112.06C112.59,84.7,112.84,84.33,113.14,84Z");
-    // canvasWrapper.drawPath(complexPathToDraw, Paint()..color = Colors.redAccent);
-    // canvasWrapper.drawPath(complexPathToDraw2, Paint());
-
-
-
-
     //surya
     double padX = 0;
     double padY = -20;
-    double xOffset = rectDrawOffset.dx-padX;
-    double yOffset = rectDrawOffset.dy-padY;
-    Size size = Size(50, 50);
-    Offset offset = Offset(20,20);
+    double xOffset = rectDrawOffset.dx - padX;
+    double yOffset = rectDrawOffset.dy - padY;
+    for (var i = 0; i < showingTooltipSpots.showingSpots.length; i++) {
+      final customizedTooltipItem = customizedTooltipItems[i] ?? null;
+      if (customizedTooltipItem == null) {
+        continue;
+      }
 
-    //print('offset x ${offset.dx} y ${offset.dy}');
-
-    // Paint paint_0_fill = Paint()..style=PaintingStyle.fill;
-    // paint_0_fill.color = Color(0xffffffff).withOpacity(1.0);
-    // canvasWrapper.drawCircle(Offset((size.width*0.5225667)+xOffset,size.height*0.7116667+yOffset),size.width*0.1827000,paint_0_fill);
-    //
-    // Path path_1 = Path();
-    // path_1.moveTo(size.width*0.5308333+xOffset,size.height*0.7943000);
-    // path_1.lineTo(size.width*0.4749667,size.height*0.7943000);
-    // path_1.quadraticBezierTo(size.width*0.4628667,size.height*0.7943000,size.width*0.4577000,size.height*0.7889000);
-    // path_1.cubicTo(size.width*0.4543667,size.height*0.7852667,size.width*0.4525333,size.height*0.7795000,size.width*0.4525333,size.height*0.7716000);
-    // path_1.lineTo(size.width*0.4525333,size.height*0.6341667);
-    // path_1.quadraticBezierTo(size.width*0.4525333,size.height*0.6221000,size.width*0.4578333,size.height*0.6168000);
-    // path_1.quadraticBezierTo(size.width*0.4631333,size.height*0.6115000,size.width*0.4749667,size.height*0.6114667);
-    // path_1.lineTo(size.width*0.5342000,size.height*0.6114667);
-    // path_1.arcToPoint(Offset(size.width*0.5569000,size.height*0.6131000),radius: Radius.elliptical(size.width*0.1396667, size.height*0.1396667),rotation: 0 ,largeArc: false,clockwise: true);
-    // path_1.arcToPoint(Offset(size.width*0.5741000,size.height*0.6193333),radius: Radius.elliptical(size.width*0.04883333, size.height*0.04883333),rotation: 0 ,largeArc: false,clockwise: true);
-    // path_1.arcToPoint(Offset(size.width*0.5856000,size.height*0.6291333),radius: Radius.elliptical(size.width*0.04536667, size.height*0.04536667),rotation: 0 ,largeArc: false,clockwise: true);
-    // path_1.arcToPoint(Offset(size.width*0.5932000,size.height*0.6422333),radius: Radius.elliptical(size.width*0.04303333, size.height*0.04303333),rotation: 0 ,largeArc: false,clockwise: true);
-    // path_1.arcToPoint(Offset(size.width*0.5958000,size.height*0.6573667),radius: Radius.elliptical(size.width*0.04403333, size.height*0.04403333),rotation: 0 ,largeArc: false,clockwise: true);
-    // path_1.quadraticBezierTo(size.width*0.5958000,size.height*0.6848000,size.width*0.5683667,size.height*0.6973667);
-    // path_1.quadraticBezierTo(size.width*0.6044000,size.height*0.7088333,size.width*0.6044333,size.height*0.7420000);
-    // path_1.arcToPoint(Offset(size.width*0.5965667,size.height*0.7696333),radius: Radius.elliptical(size.width*0.05026667, size.height*0.05026667),rotation: 0 ,largeArc: false,clockwise: true);
-    // path_1.arcToPoint(Offset(size.width*0.5753667,size.height*0.7877667),radius: Radius.elliptical(size.width*0.04696667, size.height*0.04696667),rotation: 0 ,largeArc: false,clockwise: true);
-    // path_1.arcToPoint(Offset(size.width*0.5561667,size.height*0.7927000),radius: Radius.elliptical(size.width*0.07413333, size.height*0.07413333),rotation: 0 ,largeArc: false,clockwise: true);
-    // path_1.arcToPoint(Offset(size.width*0.5308333,size.height*0.7943000),radius: Radius.elliptical(size.width*0.1939000, size.height*0.1939000),rotation: 0 ,largeArc: false,clockwise: true);
-    // path_1.close();
-    // path_1.moveTo(size.width*0.4895667,size.height*0.6393000);
-    // path_1.lineTo(size.width*0.4895667,size.height*0.6866667);
-    // path_1.lineTo(size.width*0.5235000,size.height*0.6866667);
-    // path_1.arcToPoint(Offset(size.width*0.5448667,size.height*0.6840333),radius: Radius.elliptical(size.width*0.06743333, size.height*0.06743333),rotation: 0 ,largeArc: false,clockwise: false);
-    // path_1.arcToPoint(Offset(size.width*0.5564000,size.height*0.6740333),radius: Radius.elliptical(size.width*0.02036667, size.height*0.02036667),rotation: 0 ,largeArc: false,clockwise: false);
-    // path_1.arcToPoint(Offset(size.width*0.5595333,size.height*0.6623000),radius: Radius.elliptical(size.width*0.02233333, size.height*0.02233333),rotation: 0 ,largeArc: false,clockwise: false);
-    // path_1.quadraticBezierTo(size.width*0.5595333,size.height*0.6484667,size.width*0.5495333,size.height*0.6439000);
-    // path_1.quadraticBezierTo(size.width*0.5395333,size.height*0.6393333,size.width*0.5195333,size.height*0.6393667);
-    // path_1.close();
-    // path_1.moveTo(size.width*0.5281000,size.height*0.7131333);
-    // path_1.lineTo(size.width*0.4895667,size.height*0.7131333);
-    // path_1.lineTo(size.width*0.4895667,size.height*0.7664667);
-    // path_1.lineTo(size.width*0.5293333,size.height*0.7664667);
-    // path_1.quadraticBezierTo(size.width*0.5668667,size.height*0.7664667,size.width*0.5669000,size.height*0.7394000);
-    // path_1.cubicTo(size.width*0.5669000,size.height*0.7301667,size.width*0.5635667,size.height*0.7234667,size.width*0.5571667,size.height*0.7194000);
-    // path_1.cubicTo(size.width*0.5507667,size.height*0.7153333,size.width*0.5410000,size.height*0.7131333,size.width*0.5281000,size.height*0.7131333);
-    // path_1.close();
-    //
-    // Paint paint_1_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=2;
-    // paint_1_stroke.color=Color(0xffff1cf7).withOpacity(1.0);
-    // canvasWrapper.drawPath(path_1,paint_1_stroke);
-    //
-    // Paint paint_1_fill = Paint()..style=PaintingStyle.fill;
-    // paint_1_fill.color = Color(0xffff1cf7).withOpacity(1.0);
-    // canvasWrapper.drawPath(path_1,paint_1_fill);
-    //
-    // Path path_2 = Path();
-    // path_2.moveTo(size.width*0.3757333,size.height*0.3080000);
-    // path_2.cubicTo(size.width*0.3890667,size.height*0.3080000,size.width*0.4027667,size.height*0.3082000,size.width*0.4162333,size.height*0.3077667);
-    // path_2.cubicTo(size.width*0.4220333,size.height*0.3075667,size.width*0.4239333,size.height*0.3089667,size.width*0.4238667,size.height*0.3153333);
-    // path_2.cubicTo(size.width*0.4235333,size.height*0.3507667,size.width*0.4236667,size.height*0.3862667,size.width*0.4238667,size.height*0.4217333);
-    // path_2.cubicTo(size.width*0.4238667,size.height*0.4223000,size.width*0.4238667,size.height*0.4228667,size.width*0.4238667,size.height*0.4234333);
-    // path_2.lineTo(size.width*0.4238667,size.height*0.5298000);
-    // path_2.arcToPoint(Offset(size.width*0.6303333,size.height*0.5280000),radius: Radius.elliptical(size.width*0.1982333, size.height*0.1982333),rotation: 0 ,largeArc: true,clockwise: false);
-    // path_2.quadraticBezierTo(size.width*0.6305333,size.height*0.4208333,size.width*0.6303333,size.height*0.3137000);
-    // path_2.cubicTo(size.width*0.6303333,size.height*0.3084667,size.width*0.6322333,size.height*0.3078667,size.width*0.6365333,size.height*0.3079333);
-    // path_2.cubicTo(size.width*0.6505333,size.height*0.3081667,size.width*0.6645667,size.height*0.3079333,size.width*0.6785667,size.height*0.3079333);
-    // path_2.cubicTo(size.width*0.6894667,size.height*0.3079333,size.width*0.6981000,size.height*0.3038667,size.width*0.7024667,size.height*0.2932333);
-    // path_2.cubicTo(size.width*0.7068333,size.height*0.2826000,size.width*0.7033667,size.height*0.2735333,size.width*0.6956333,size.height*0.2656667);
-    // path_2.quadraticBezierTo(size.width*0.6227000,size.height*0.1913667,size.width*0.5500000,size.height*0.1169667);
-    // path_2.cubicTo(size.width*0.5359000,size.height*0.1026000,size.width*0.5181000,size.height*0.1026333,size.width*0.5040000,size.height*0.1169667);
-    // path_2.quadraticBezierTo(size.width*0.4312000,size.height*0.1913333,size.width*0.3585667,size.height*0.2658000);
-    // path_2.cubicTo(size.width*0.3508333,size.height*0.2736667,size.width*0.3473667,size.height*0.2826667,size.width*0.3519000,size.height*0.2933667);
-    // path_2.cubicTo(size.width*0.3564333,size.height*0.3040667,size.width*0.3648333,size.height*0.3080667,size.width*0.3757333,size.height*0.3080000);
-    // path_2.close();
-    // path_2.moveTo(size.width*0.7033667,size.height*0.6980000);
-    // path_2.arcToPoint(Offset(size.width*0.5284667,size.height*0.5233333),radius: Radius.elliptical(size.width*0.1749000, size.height*0.1749000),rotation: 0 ,largeArc: true,clockwise: true);
-    // path_2.arcToPoint(Offset(size.width*0.7033333,size.height*0.6980667),radius: Radius.elliptical(size.width*0.1751000, size.height*0.1751000),rotation: 0 ,largeArc: false,clockwise: true);
-    // path_2.close();
-    // path_2.moveTo(size.width*0.3771333,size.height*0.2800000);
-    // path_2.quadraticBezierTo(size.width*0.4481667,size.height*0.2072000,size.width*0.5193000,size.height*0.1345333);
-    // path_2.cubicTo(size.width*0.5259667,size.height*0.1278667,size.width*0.5283333,size.height*0.1278667,size.width*0.5351333,size.height*0.1349000);
-    // path_2.quadraticBezierTo(size.width*0.6057333,size.height*0.2071000,size.width*0.6762000,size.height*0.2793333);
-    // path_2.cubicTo(size.width*0.6774333,size.height*0.2806000,size.width*0.6799000,size.height*0.2814333,size.width*0.6789667,size.height*0.2844000);
-    // path_2.cubicTo(size.width*0.6626667,size.height*0.2844000,size.width*0.6464000,size.height*0.2844000,size.width*0.6301000,size.height*0.2844000);
-    // path_2.arcToPoint(Offset(size.width*0.6075333,size.height*0.3062333),radius: Radius.elliptical(size.width*0.02243333, size.height*0.02243333),rotation: 0 ,largeArc: false,clockwise: false);
-    // path_2.cubicTo(size.width*0.6073000,size.height*0.3091000,size.width*0.6075333,size.height*0.3119667,size.width*0.6075333,size.height*0.3148333);
-    // path_2.quadraticBezierTo(size.width*0.6075333,size.height*0.4154333,size.width*0.6075333,size.height*0.5160667);
-    // path_2.arcToPoint(Offset(size.width*0.4468667,size.height*0.5173000),radius: Radius.elliptical(size.width*0.1982000, size.height*0.1982000),rotation: 0 ,largeArc: false,clockwise: false);
-    // path_2.lineTo(size.width*0.4468667,size.height*0.4086000);
-    // path_2.lineTo(size.width*0.4468667,size.height*0.4086000);
-    // path_2.quadraticBezierTo(size.width*0.4468667,size.height*0.3596000,size.width*0.4468667,size.height*0.3105333);
-    // path_2.cubicTo(size.width*0.4468667,size.height*0.2935000,size.width*0.4379000,size.height*0.2845667,size.width*0.4213000,size.height*0.2845000);
-    // path_2.lineTo(size.width*0.3735333,size.height*0.2845000);
-    // path_2.cubicTo(size.width*0.3753000,size.height*0.2823333,size.width*0.3761333,size.height*0.2811000,size.width*0.3771333,size.height*0.2800000);
-    // path_2.close();
-    //
-    // Paint paint_2_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=2;
-    // paint_2_stroke.color=Color(0xffff1cf7).withOpacity(1.0);
-    // canvasWrapper.drawPath(path_2,paint_2_stroke);
-    //
-    // Paint paint_2_fill = Paint()..style=PaintingStyle.fill;
-    // paint_2_fill.color = Color(0xffff1cf7).withOpacity(1.0);
-    // canvasWrapper.drawPath(path_2,paint_2_fill);
-
-
-
-    Canvas svgCanvas = canvasWrapper.canvas;
-    svgCanvas.translate(xOffset, yOffset);
-    var svgRoot= holder.data.lineTouchData.iconBuySvg!;
-
-    // Size svgSize = svgRoot.viewport.size;
-    // var matrix = Matrix4.identity();
-    // matrix.scale(100 / svgSize.width, 100 / svgSize.height);
-    //svgCanvas.transform(matrix.storage);
-
-    ui.Picture svgPicture = svgRoot.toPicture(size:Size(40,40));
-
-    canvasWrapper.drawPicture(svgPicture);
-    svgCanvas.translate(-xOffset, -yOffset);
-
-    //surya
+      canvasWrapper.translate(xOffset, yOffset);
+      canvasWrapper.drawPicture(customizedTooltipItem);
+      canvasWrapper.translate(-xOffset, -yOffset);
+    }
 
 
     /// draw the texts one by one in below of each other
@@ -1337,11 +1208,9 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
   }
 
   @visibleForTesting
-  double getBarLineXLength(
-    LineChartBarData barData,
-    Size chartUsableSize,
-    PaintHolder<LineChartData> holder,
-  ) {
+  double getBarLineXLength(LineChartBarData barData,
+      Size chartUsableSize,
+      PaintHolder<LineChartData> holder,) {
     if (barData.spots.isEmpty) {
       return 0.0;
     }
@@ -1360,11 +1229,9 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
   /// Processes [localPosition] and checks
   /// the elements of the chart that are near the offset,
   /// then makes a [LineTouchResponse] from the elements that has been touched.
-  List<TouchLineBarSpot>? handleTouch(
-    Offset localPosition,
-    Size size,
-    PaintHolder<LineChartData> holder,
-  ) {
+  List<TouchLineBarSpot>? handleTouch(Offset localPosition,
+      Size size,
+      PaintHolder<LineChartData> holder,) {
     final data = holder.data;
 
     /// it holds list of nearest touched spots of each line
@@ -1377,7 +1244,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
 
       // find the nearest spot on touch area in this bar line
       final foundTouchedSpot =
-          getNearestTouchedSpot(size, localPosition, barData, i, holder);
+      getNearestTouchedSpot(size, localPosition, barData, i, holder);
       if (foundTouchedSpot != null) {
         touchedSpots.add(foundTouchedSpot);
       }
@@ -1390,13 +1257,11 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
 
   /// find the nearest spot base on the touched offset
   @visibleForTesting
-  TouchLineBarSpot? getNearestTouchedSpot(
-    Size viewSize,
-    Offset touchedPoint,
-    LineChartBarData barData,
-    int barDataPosition,
-    PaintHolder<LineChartData> holder,
-  ) {
+  TouchLineBarSpot? getNearestTouchedSpot(Size viewSize,
+      Offset touchedPoint,
+      LineChartBarData barData,
+      int barDataPosition,
+      PaintHolder<LineChartData> holder,) {
     final data = holder.data;
     if (!barData.show) {
       return null;
@@ -1443,11 +1308,9 @@ class LineIndexDrawingInfo {
   final int spotIndex;
   final TouchedSpotIndicatorData indicatorData;
 
-  LineIndexDrawingInfo(
-    this.line,
-    this.lineIndex,
-    this.spot,
-    this.spotIndex,
-    this.indicatorData,
-  );
+  LineIndexDrawingInfo(this.line,
+      this.lineIndex,
+      this.spot,
+      this.spotIndex,
+      this.indicatorData,);
 }

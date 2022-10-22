@@ -1444,8 +1444,6 @@ class LineTouchData extends FlTouchData<LineTouchResponse> with EquatableMixin {
   /// Configs of how customized touch tooltip popup.
   final CustomizedLineTouchToolTipData customizedTouchTooltipData;
 
-  final DrawableRoot? iconBuySvg;
-
   /// Configs of how touch indicator looks like.
   final GetTouchedSpotIndicator getTouchedSpotIndicator;
 
@@ -1490,7 +1488,6 @@ class LineTouchData extends FlTouchData<LineTouchResponse> with EquatableMixin {
     MouseCursorResolver<LineTouchResponse>? mouseCursorResolver,
     LineTouchTooltipData? touchTooltipData,
     CustomizedLineTouchToolTipData? customizedTouchTooltipData,
-    DrawableRoot? iconBuySvg,
     GetTouchedSpotIndicator? getTouchedSpotIndicator,
     double? touchSpotThreshold,
     CalculateTouchDistance? distanceCalculator,
@@ -1499,8 +1496,8 @@ class LineTouchData extends FlTouchData<LineTouchResponse> with EquatableMixin {
     GetTouchLineY? getTouchLineEnd,
   })
       : touchTooltipData = touchTooltipData ?? LineTouchTooltipData(),
-        customizedTouchTooltipData = customizedTouchTooltipData ?? CustomizedLineTouchToolTipData(),
-        iconBuySvg = iconBuySvg,
+        customizedTouchTooltipData = customizedTouchTooltipData ??
+            CustomizedLineTouchToolTipData(),
         getTouchedSpotIndicator =
             getTouchedSpotIndicator ?? defaultTouchedIndicators,
         touchSpotThreshold = touchSpotThreshold ?? 10,
@@ -1513,7 +1510,6 @@ class LineTouchData extends FlTouchData<LineTouchResponse> with EquatableMixin {
   /// Copies current [LineTouchData] to a new [LineTouchData],
   /// and replaces provided values.
   LineTouchData copyWith({
-    DrawableRoot? iconBuySvg,
     bool? enabled,
     BaseTouchCallback<LineTouchResponse>? touchCallback,
     MouseCursorResolver<LineTouchResponse>? mouseCursorResolver,
@@ -1527,7 +1523,6 @@ class LineTouchData extends FlTouchData<LineTouchResponse> with EquatableMixin {
   }) {
     return LineTouchData(
       enabled: enabled ?? this.enabled,
-      iconBuySvg: iconBuySvg ?? this.iconBuySvg,
       touchCallback: touchCallback ?? this.touchCallback,
       mouseCursorResolver: mouseCursorResolver ?? this.mouseCursorResolver,
       touchTooltipData: touchTooltipData ?? this.touchTooltipData,
@@ -1544,7 +1539,7 @@ class LineTouchData extends FlTouchData<LineTouchResponse> with EquatableMixin {
   /// Used for equality check, see [EquatableMixin].
   @override
   List<Object?> get props =>
-      [iconBuySvg,
+      [
         enabled,
         touchCallback,
         mouseCursorResolver,
@@ -1738,14 +1733,15 @@ class LineTouchTooltipData with EquatableMixin {
 typedef GetLineTooltipItems = List<LineTooltipItem?> Function(
     List<LineBarSpot> touchedSpots);
 
-/// Provides a [Widget] for showing content inside the [CustomizedLineTouchTooltipData].
-typedef CustomizedGetLineTooltipItems = List<Widget?> Function(
+/// Provides a [Picture] for showing content inside the [CustomizedLineTouchTooltipData].
+typedef CustomizedGetLineTooltipItems = List<Picture?> Function(
     List<LineBarSpot> touchedSpots);
 
 /// Default implementation for [CustomizedLineTouchTooltipData.getTooltipItems].
-List<Widget> defaultCustomizedLineTooltipItem(List<LineBarSpot> touchedSpots) {
+List<Picture?> defaultCustomizedLineTooltipItem(
+    List<LineBarSpot> touchedSpots) {
   return touchedSpots.map((LineBarSpot touchedSpot) {
-    return SizedBox.shrink();
+    return null;
   }).toList();
 }
 
