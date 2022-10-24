@@ -72,14 +72,11 @@ class RenderLineChart extends RenderBaseChart<LineTouchResponse> {
   var painter = LineChartPainter();
 
   PaintHolder<LineChartData> get paintHolder {
-    print('this is data ${data.lineTouchData.customizedTouchTooltipData.customizedGetTooltipItems.toString()}');
-    print('this is target data ${targetData.lineBarsData[0].spots.toString()}');
     return PaintHolder(data, targetData, textScale);
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    print('start painting');
     final canvas = context.canvas;
     canvas.save();
     canvas.translate(offset.dx, offset.dy);
@@ -89,7 +86,6 @@ class RenderLineChart extends RenderBaseChart<LineTouchResponse> {
       paintHolder,
     );
     canvas.restore();
-    print('done painting');
   }
 
   @override
