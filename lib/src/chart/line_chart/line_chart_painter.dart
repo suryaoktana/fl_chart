@@ -1149,8 +1149,8 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
       _borderTouchTooltipPaint.color = tooltipData.tooltipBorder.color;
       _borderTouchTooltipPaint.strokeWidth = tooltipData.tooltipBorder.width;
     }
-
-    //surya
+    
+//surya
     double padX = 0;
     double padY = -20;
     double xOffset = rectDrawOffset.dx - padX;
