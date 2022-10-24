@@ -1734,11 +1734,11 @@ typedef GetLineTooltipItems = List<LineTooltipItem?> Function(
     List<LineBarSpot> touchedSpots);
 
 /// Provides a [Picture] for showing content inside the [CustomizedLineTouchTooltipData].
-typedef CustomizedGetLineTooltipItems = List<Picture?> Function(
+typedef CustomizedGetLineTooltipItems = List<ToolTipPictureData?> Function(
     List<LineBarSpot> touchedSpots);
 
 /// Default implementation for [CustomizedLineTouchTooltipData.getTooltipItems].
-List<Picture?> defaultCustomizedLineTooltipItem(
+List<ToolTipPictureData?> defaultCustomizedLineTooltipItem(
     List<LineBarSpot> touchedSpots) {
   return touchedSpots.map((LineBarSpot touchedSpot) {
     return null;
@@ -1915,4 +1915,11 @@ class LineChartDataTween extends Tween<LineChartData> {
   /// Lerps a [LineChartData] based on [t] value, check [Tween.lerp].
   @override
   LineChartData lerp(double t) => begin!.lerp(begin!, end!, t);
+}
+
+class ToolTipPictureData {
+  final Picture picture;
+  final Offset offset;
+
+  ToolTipPictureData({required this.picture, this.offset = const Offset(0, 0)});
 }

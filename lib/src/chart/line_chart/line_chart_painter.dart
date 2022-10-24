@@ -1149,22 +1149,34 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
       _borderTouchTooltipPaint.color = tooltipData.tooltipBorder.color;
       _borderTouchTooltipPaint.strokeWidth = tooltipData.tooltipBorder.width;
     }
-    
-//surya
-    double padX = 0;
-    double padY = -20;
-    double xOffset = rectDrawOffset.dx - padX;
-    double yOffset = rectDrawOffset.dy - padY;
+
+    // canvasWrapper.drawRotated(
+    //   size: rect.size,
+    //   rotationOffset: rectRotationOffset,
+    //   drawOffset: rectDrawOffset,
+    //   angle: rotateAngle,
+    //   drawCallback: () {
+    //     canvasWrapper
+    //       ..drawRRect(roundedRect, _bgTouchTooltipPaint)
+    //       ..drawRRect(roundedRect, _borderTouchTooltipPaint);
+    //   },
+    // );
+
+    //surya
+    double xOffset = rect.center.dx;
+    double yOffset = rect.center.dy;
     for (var i = 0; i < showingTooltipSpots.showingSpots.length; i++) {
       final customizedTooltipItem = customizedTooltipItems[i] ?? null;
       if (customizedTooltipItem == null) {
         continue;
       }
 
-      canvasWrapper.translate(xOffset, yOffset);
-      canvasWrapper.drawPicture(customizedTooltipItem);
-      canvasWrapper.translate(-xOffset, -yOffset);
+      canvasWrapper.translate(xOffset+customizedTooltipItem.offset.dx, yOffset-customizedTooltipItem.offset.dy);
+      canvasWrapper.drawPicture(customizedTooltipItem.picture);
+      canvasWrapper.translate(-xOffset-customizedTooltipItem.offset.dx, -yOffset+customizedTooltipItem.offset.dy);
     }
+
+
 
 
     /// draw the texts one by one in below of each other
