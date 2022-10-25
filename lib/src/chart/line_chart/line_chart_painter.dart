@@ -1181,7 +1181,6 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
 
     /// draw the texts one by one in below of each other
     var topPosSeek = tooltipData.tooltipPadding.top;
-    canvasWrapper.saveLayer(rect, Paint());
     for (var tp in drawingTextPainters) {
 
       double yOffset = rect.topCenter.dy +
@@ -1218,12 +1217,10 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
       //     canvasWrapper.drawText(tp, drawOffset);
       //   },
       // );
-      canvasWrapper.drawText(tp, Offset(100,100));
 
       topPosSeek += tp.height;
       topPosSeek += textsBelowMargin;
     }
-    canvasWrapper.restore();
   }
 
   @visibleForTesting
