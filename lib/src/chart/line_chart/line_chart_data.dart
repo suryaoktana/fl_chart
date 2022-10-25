@@ -7,7 +7,6 @@ import 'package:fl_chart/src/chart/line_chart/line_chart_helper.dart';
 import 'package:fl_chart/src/extensions/color_extension.dart';
 import 'package:fl_chart/src/extensions/gradient_extension.dart';
 import 'package:fl_chart/src/utils/lerp.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart' hide Image;
 
 /// [LineChart] needs this class to render itself.
@@ -278,6 +277,13 @@ class LineChartBarData with EquatableMixin {
   /// Show indicators based on provided indexes
   final List<int> showingIndicators;
 
+  /// Show center value based on provided indexes
+  final List<Widget> showingTopRightValue;
+
+  /// Show center value based on provided indexes
+  final Widget defaultShowingTopRightValue;
+
+
   /// Determines the dash length and space respectively, fill it if you want to have dashed line.
   final List<int>? dashArray;
 
@@ -347,6 +353,8 @@ class LineChartBarData with EquatableMixin {
     BarAreaData? aboveBarData,
     FlDotData? dotData,
     List<int>? showingIndicators,
+    List<Widget>? showingTopRightValue,
+    Widget? defaultShowingTopRightValue,
     List<int>? dashArray,
     Shadow? shadow,
     bool? isStepLineChart,
@@ -369,6 +377,8 @@ class LineChartBarData with EquatableMixin {
         aboveBarData = aboveBarData ?? BarAreaData(),
         dotData = dotData ?? FlDotData(),
         showingIndicators = showingIndicators ?? const [],
+        showingTopRightValue = showingTopRightValue?? const [],
+        defaultShowingTopRightValue = defaultShowingTopRightValue?? const SizedBox.shrink(),
         dashArray = dashArray,
         shadow = shadow ?? const Shadow(color: Colors.transparent),
         isStepLineChart = isStepLineChart ?? false,

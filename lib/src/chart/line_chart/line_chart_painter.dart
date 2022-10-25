@@ -7,11 +7,10 @@ import 'package:fl_chart/src/chart/base/axis_chart/axis_chart_painter.dart';
 import 'package:fl_chart/src/chart/base/base_chart/base_chart_painter.dart';
 import 'package:fl_chart/src/extensions/paint_extension.dart';
 import 'package:fl_chart/src/extensions/path_extension.dart';
+import 'package:fl_chart/src/extensions/text_align_extension.dart';
 import 'package:fl_chart/src/utils/canvas_wrapper.dart';
+import 'package:fl_chart/src/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:path_drawing/path_drawing.dart';
-import '../../extensions/text_align_extension.dart';
-import '../../utils/utils.dart';
 
 /// Paints [LineChartData] in the canvas, it can be used in a [CustomPainter]
 class LineChartPainter extends AxisChartPainter<LineChartData> {
@@ -1020,6 +1019,9 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         continue;
       }
 
+
+
+
       final span = TextSpan(
         style: Utils().getThemeAwareTextStyle(context, tooltipItem.textStyle),
         text: tooltipItem.text,
@@ -1171,17 +1173,17 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         continue;
       }
 
-      canvasWrapper.translate(xOffset+customizedTooltipItem.offset.dx, yOffset-customizedTooltipItem.offset.dy);
-      canvasWrapper.drawPicture(customizedTooltipItem.picture);
-      canvasWrapper.translate(-xOffset-customizedTooltipItem.offset.dx, -yOffset+customizedTooltipItem.offset.dy);
+      canvasWrapper..translate(xOffset+customizedTooltipItem.offset.dx, yOffset-customizedTooltipItem.offset.dy)
+      ..drawPicture(customizedTooltipItem.picture)
+      ..translate(-xOffset-customizedTooltipItem.offset.dx, -yOffset+customizedTooltipItem.offset.dy);
     }
-
-
 
 
     /// draw the texts one by one in below of each other
     var topPosSeek = tooltipData.tooltipPadding.top;
+    canvasWrapper.saveLayer(rect, Paint());
     for (var tp in drawingTextPainters) {
+
       double yOffset = rect.topCenter.dy +
           topPosSeek -
           textRotationOffset.dy +
@@ -1205,6 +1207,8 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         yOffset,
       );
 
+
+
       // canvasWrapper.drawRotated(
       //   size: rect.size,
       //   rotationOffset: rectRotationOffset,
@@ -1214,9 +1218,12 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
       //     canvasWrapper.drawText(tp, drawOffset);
       //   },
       // );
+      canvasWrapper.drawText(tp, Offset(100,100));
+
       topPosSeek += tp.height;
       topPosSeek += textsBelowMargin;
     }
+    canvasWrapper.restore();
   }
 
   @visibleForTesting

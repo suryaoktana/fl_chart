@@ -66,13 +66,32 @@ class AxisChartScaffoldWidget extends StatelessWidget {
 
   List<Widget> stackWidgets(BoxConstraints constraints) {
     final widgets = <Widget>[
+
       Container(
         margin: data.titlesData.allSidesPadding,
         decoration: BoxDecoration(
           border: data.borderData.isVisible() ? data.borderData.border : null,
         ),
         child: chart,
-      )
+      ),
+      if(data is LineChartData)Builder(builder: (context){
+        LineChartData lineChartData = data as LineChartData;
+        return Align(
+          alignment: Alignment.topRight,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: lineChartData.lineBarsData.map((element) {
+              if(element.showingTopRightValue.isNotEmpty){
+                return element.showingTopRightValue.last;
+              }
+              else{
+                return element.defaultShowingTopRightValue;
+              }
+
+            }).toList()
+          ),
+        );
+      })
     ];
 
     int insertIndex(bool drawBelow) => drawBelow ? 0 : widgets.length;
