@@ -10,10 +10,11 @@ import 'package:flutter/material.dart';
 
 /// Low level LineChart Widget.
 class LineChartLeaf extends LeafRenderObjectWidget {
-  const LineChartLeaf({Key? key, required this.data, required this.targetData})
+  const LineChartLeaf({Key? key, required this.data, required this.targetData, this.pathLengthCallBack})
       : super(key: key);
 
   final LineChartData data, targetData;
+  final Function(double)? pathLengthCallBack;
 
   @override
   RenderLineChart createRenderObject(BuildContext context) => RenderLineChart(
@@ -41,6 +42,7 @@ class RenderLineChart extends RenderBaseChart<LineTouchResponse> {
 
   LineChartData get data => _data;
   LineChartData _data;
+
   set data(LineChartData value) {
     if (_data == value) return;
     _data = value;

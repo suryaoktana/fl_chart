@@ -290,6 +290,12 @@ class LineChartBarData with EquatableMixin {
   /// Drops a shadow behind the bar line.
   final Shadow shadow;
 
+  /// Callback function to get Line Length
+  final Function(double)? lineLengthCallback;
+
+  /// Callback function to get coordinate x and y
+  final Function(List<Offset>)? drawingCoordinateCallback;
+
   /// If sets true, it draws the chart in Step Line Chart style, using [LineChartBarData.lineChartStepData].
   final bool isStepLineChart;
 
@@ -357,6 +363,8 @@ class LineChartBarData with EquatableMixin {
     Widget? defaultShowingTopRightValue,
     List<int>? dashArray,
     Shadow? shadow,
+    Function(double)? lineLengthCallback,
+    Function(List<Offset>)? drawingCoordinateCallback,
     bool? isStepLineChart,
     LineChartStepData? lineChartStepData,
   })
@@ -381,6 +389,8 @@ class LineChartBarData with EquatableMixin {
         defaultShowingTopRightValue = defaultShowingTopRightValue?? const SizedBox.shrink(),
         dashArray = dashArray,
         shadow = shadow ?? const Shadow(color: Colors.transparent),
+        lineLengthCallback = lineLengthCallback,
+        drawingCoordinateCallback = drawingCoordinateCallback,
         isStepLineChart = isStepLineChart ?? false,
         lineChartStepData = lineChartStepData ?? LineChartStepData() {
     FlSpot? mostLeft, mostTop, mostRight, mostBottom;

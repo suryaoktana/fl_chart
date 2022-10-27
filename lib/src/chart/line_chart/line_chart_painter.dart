@@ -213,7 +213,8 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
     // because barData is the whole line
     // and bar is a piece of that line
     for (var bar in barList) {
-      final barPath = generateBarPath(viewSize, barData, bar, holder);
+      final barPath = generateBarPath(
+          viewSize, barData, bar, holder);
 
       final belowBarPath =
       generateBelowBarPath(viewSize, barData, barPath, bar, holder);
@@ -430,6 +431,10 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
     } else {
       path.lineTo(x, y);
     }
+    double totalLengthLine = 0;
+    List<Offset> drawingCoordinates = [];
+    drawingCoordinates.clear();
+
     for (var i = 1; i < size; i++) {
       /// CurrentSpot
       final current = Offset(
@@ -448,6 +453,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         getPixelX(barSpots[i + 1 < size ? i + 1 : i].x, viewSize, holder),
         getPixelY(barSpots[i + 1 < size ? i + 1 : i].y, viewSize, holder),
       );
+
 
       final controlPoint1 = previous + temp;
 
@@ -481,6 +487,22 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         current.dx,
         current.dy,
       );
+
+      drawingCoordinates.add(previous);
+      //surya
+      //using phytagoras to determine line total lenth
+      totalLengthLine = totalLengthLine + sqrt(
+          pow((current.dx - previous.dx), 2) +
+              pow(current.dy - previous.dy, 2));
+    }
+    //print('drawingCoordinates length ${drawingCoordinates.length}');
+    
+    if(barData.lineLengthCallback!=null){
+      barData.lineLengthCallback!(totalLengthLine);
+    }
+
+    if(barData.drawingCoordinateCallback!=null){
+      barData.drawingCoordinateCallback!(drawingCoordinates);
     }
 
     return path;
@@ -823,11 +845,12 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
   void drawBar(CanvasWrapper canvasWrapper,
       Path barPath,
       LineChartBarData barData,
-      PaintHolder<LineChartData> holder,) {
+      PaintHolder<LineChartData> holder) {
     if (!barData.show) {
       return;
     }
     final viewSize = canvasWrapper.size;
+
 
     _barPaint.strokeCap =
     barData.isStrokeCapRound ? StrokeCap.round : StrokeCap.butt;
@@ -851,6 +874,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
     _barPaint.transparentIfWidthIsZero();
 
     barPath = barPath.toDashedPath(barData.dashArray);
+    Rect rectSurya = barPath.getBounds();
     canvasWrapper.drawPath(barPath, _barPaint);
   }
 
@@ -1020,8 +1044,6 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
       }
 
 
-
-
       final span = TextSpan(
         style: Utils().getThemeAwareTextStyle(context, tooltipItem.textStyle),
         text: tooltipItem.text,
@@ -1173,16 +1195,18 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         continue;
       }
 
-      canvasWrapper..translate(xOffset+customizedTooltipItem.offset.dx, yOffset-customizedTooltipItem.offset.dy)
-      ..drawPicture(customizedTooltipItem.picture)
-      ..translate(-xOffset-customizedTooltipItem.offset.dx, -yOffset+customizedTooltipItem.offset.dy);
+      canvasWrapper
+        ..translate(xOffset + customizedTooltipItem.offset.dx,
+            yOffset - customizedTooltipItem.offset.dy)
+        ..drawPicture(customizedTooltipItem.picture)
+        ..translate(-xOffset - customizedTooltipItem.offset.dx,
+            -yOffset + customizedTooltipItem.offset.dy);
     }
 
 
     /// draw the texts one by one in below of each other
     var topPosSeek = tooltipData.tooltipPadding.top;
     for (var tp in drawingTextPainters) {
-
       double yOffset = rect.topCenter.dy +
           topPosSeek -
           textRotationOffset.dy +
@@ -1205,7 +1229,6 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         xOffset,
         yOffset,
       );
-
 
 
       // canvasWrapper.drawRotated(
