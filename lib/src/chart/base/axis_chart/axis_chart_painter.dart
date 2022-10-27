@@ -186,6 +186,9 @@ abstract class AxisChartPainter<D extends AxisChartData>
   double getPixelX(double spotX, Size viewSize, PaintHolder<D> holder) {
     final data = holder.data;
     final deltaX = data.maxX - data.minX;
+    // print('data max X ${data.maxX}');
+    // print('data min X ${data.minX}');
+    // print('delta X ${deltaX}');
     if (deltaX == 0.0) {
       return 0;
     }

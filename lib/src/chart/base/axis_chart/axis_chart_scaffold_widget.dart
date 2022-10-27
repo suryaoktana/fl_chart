@@ -87,7 +87,6 @@ class AxisChartScaffoldWidget extends StatelessWidget {
               else{
                 return element.defaultShowingTopRightValue;
               }
-
             }).toList()
           ),
         );
