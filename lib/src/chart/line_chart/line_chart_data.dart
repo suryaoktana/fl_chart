@@ -294,7 +294,7 @@ class LineChartBarData with EquatableMixin {
   final Function(double)? lineLengthCallback;
 
   /// Callback function to get coordinate x and y
-  final Function(List<Offset>)? drawingCoordinateCallback;
+  final Function(List<CoordinatesModel>)? drawingCoordinateCallback;
 
   /// If sets true, it draws the chart in Step Line Chart style, using [LineChartBarData.lineChartStepData].
   final bool isStepLineChart;
@@ -364,7 +364,7 @@ class LineChartBarData with EquatableMixin {
     List<int>? dashArray,
     Shadow? shadow,
     Function(double)? lineLengthCallback,
-    Function(List<Offset>)? drawingCoordinateCallback,
+    Function(List<CoordinatesModel>)? drawingCoordinateCallback,
     bool? isStepLineChart,
     LineChartStepData? lineChartStepData,
   })
@@ -1942,4 +1942,11 @@ class ToolTipPictureData {
   final Offset offset;
 
   ToolTipPictureData({required this.picture, this.offset = const Offset(0, 0)});
+}
+
+class CoordinatesModel{
+  final Offset offset;
+  final double distance;
+  CoordinatesModel(this.offset, this.distance);
+
 }

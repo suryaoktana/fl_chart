@@ -432,7 +432,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
       path.lineTo(x, y);
     }
     double totalLengthLine = 0;
-    List<Offset> drawingCoordinates = [];
+    List<CoordinatesModel> drawingCoordinates = [];
     drawingCoordinates.clear();
 
     for (var i = 1; i < size; i++) {
@@ -487,13 +487,15 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         current.dx,
         current.dy,
       );
-
-      drawingCoordinates.add(previous);
-      //surya
-      //using phytagoras to determine line total lenth
-      totalLengthLine = totalLengthLine + sqrt(
+      double distance = sqrt(
           pow((current.dx - previous.dx), 2) +
               pow(current.dy - previous.dy, 2));
+
+      drawingCoordinates.add(CoordinatesModel(Offset(current.dx+30, current.dy-5), distance));
+      //print('distance $distance');
+      //surya
+      //using phytagoras to determine line total lenth
+      totalLengthLine = totalLengthLine + distance;
     }
     //print('drawingCoordinates length ${drawingCoordinates.length}');
     
@@ -874,7 +876,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
     _barPaint.transparentIfWidthIsZero();
 
     barPath = barPath.toDashedPath(barData.dashArray);
-    Rect rectSurya = barPath.getBounds();
+
     canvasWrapper.drawPath(barPath, _barPaint);
   }
 
