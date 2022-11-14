@@ -133,7 +133,7 @@ class CanvasWrapper {
     Offset from,
     Offset to,
     Paint painter,
-    List<int>? dashArray,
+    List<double>? dashArray,
   ) {
     var path = Path()
       ..moveTo(from.dx, from.dy)

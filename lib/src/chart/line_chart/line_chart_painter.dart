@@ -487,11 +487,12 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         current.dx,
         current.dy,
       );
+      //print('current dx ${current.dx}');
       double distance = sqrt(
           pow((current.dx - previous.dx), 2) +
               pow(current.dy - previous.dy, 2));
-
-      drawingCoordinates.add(CoordinatesModel(Offset(current.dx+30, current.dy-5), distance));
+      // print('current y ${current.dy}');
+      drawingCoordinates.add(CoordinatesModel(Offset(previous.dx+33, previous.dy), distance));
       //print('distance $distance');
       //surya
       //using phytagoras to determine line total lenth

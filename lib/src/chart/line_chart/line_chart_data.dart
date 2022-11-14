@@ -285,7 +285,7 @@ class LineChartBarData with EquatableMixin {
 
 
   /// Determines the dash length and space respectively, fill it if you want to have dashed line.
-  final List<int>? dashArray;
+  final List<double>? dashArray;
 
   /// Drops a shadow behind the bar line.
   final Shadow shadow;
@@ -361,7 +361,7 @@ class LineChartBarData with EquatableMixin {
     List<int>? showingIndicators,
     List<Widget>? showingTopRightValue,
     Widget? defaultShowingTopRightValue,
-    List<int>? dashArray,
+    List<double>? dashArray,
     Shadow? shadow,
     Function(double)? lineLengthCallback,
     Function(List<CoordinatesModel>)? drawingCoordinateCallback,
@@ -448,7 +448,7 @@ class LineChartBarData with EquatableMixin {
           b.preventCurveOvershootingThreshold,
           t),
       dotData: FlDotData.lerp(a.dotData, b.dotData, t),
-      dashArray: lerpIntList(a.dashArray, b.dashArray, t),
+      dashArray: lerpDoubleList(a.dashArray, b.dashArray, t),
       color: Color.lerp(a.color, b.color, t),
       gradient: Gradient.lerp(a.gradient, b.gradient, t),
       spots: lerpFlSpotList(a.spots, b.spots, t),
@@ -477,7 +477,7 @@ class LineChartBarData with EquatableMixin {
     BarAreaData? belowBarData,
     BarAreaData? aboveBarData,
     FlDotData? dotData,
-    List<int>? dashArray,
+    List<double>? dashArray,
     List<int>? showingIndicators,
     Shadow? shadow,
     bool? isStepLineChart,
@@ -1110,7 +1110,7 @@ class HorizontalLine extends FlLine with EquatableMixin {
     HorizontalLineLabel? label,
     Color? color,
     double? strokeWidth,
-    List<int>? dashArray,
+    List<double>? dashArray,
     this.image,
     this.sizedPicture,
   })
@@ -1127,7 +1127,7 @@ class HorizontalLine extends FlLine with EquatableMixin {
       label: HorizontalLineLabel.lerp(a.label, b.label, t),
       color: Color.lerp(a.color, b.color, t),
       strokeWidth: lerpDouble(a.strokeWidth, b.strokeWidth, t),
-      dashArray: lerpIntList(a.dashArray, b.dashArray, t),
+      dashArray: lerpDoubleList(a.dashArray, b.dashArray, t),
       image: b.image,
       sizedPicture: b.sizedPicture,
     );
@@ -1179,7 +1179,7 @@ class VerticalLine extends FlLine with EquatableMixin {
     VerticalLineLabel? label,
     Color? color,
     double? strokeWidth,
-    List<int>? dashArray,
+    List<double>? dashArray,
     this.image,
     this.sizedPicture,
   })
@@ -1196,7 +1196,7 @@ class VerticalLine extends FlLine with EquatableMixin {
       label: VerticalLineLabel.lerp(a.label, b.label, t),
       color: Color.lerp(a.color, b.color, t),
       strokeWidth: lerpDouble(a.strokeWidth, b.strokeWidth, t),
-      dashArray: lerpIntList(a.dashArray, b.dashArray, t),
+      dashArray: lerpDoubleList(a.dashArray, b.dashArray, t),
       image: b.image,
       sizedPicture: b.sizedPicture,
     );
